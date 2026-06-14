@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Date Invite ❤️</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#fff0f5;
+    font-family:Arial,sans-serif;
+    overflow:hidden;
+}
+
+.container{
+    text-align:center;
+    background:white;
+    padding:30px 20px;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.15);
+    width:90%;
+    max-width:380px;
+}
+
+h1{
+    color:#ff4d88;
+    font-size:clamp(1.2rem, 5vw, 1.6rem);
+    margin:0 0 10px;
+}
+
+p{
+    font-size:clamp(0.9rem, 4vw, 1rem);
+}
+
+.buttons{
+    margin-top:20px;
+    position:relative;
+    height:100px;
+}
+
+button{
+    padding:12px 25px;
+    border:none;
+    border-radius:25px;
+    font-size:clamp(14px, 4vw, 16px);
+    cursor:pointer;
+    touch-action:manipulation;
+}
+
+#yesBtn{
+    background:#ff4d88;
+    color:white;
+    position:absolute;
+    left:20px;
+}
+
+#noBtn{
+    background:#ddd;
+    color:#333;
+    position:absolute;
+    right:20px;
+    transition:none;
+}
+
+#dateSection{
+    display:none;
+}
+
+input[type="date"]{
+    width:90%;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    margin-top:15px;
+    font-size:16px; /* prevents iOS zoom on focus */
+}
+
+.confirm-btn{
+    background:#ff4d88;
+    color:white;
+    margin-top:10px;
+}
+
+#result{
+    color:#ff4d88;
+    font-weight:bold;
+    margin-top:15px;
+    font-size:clamp(0.9rem, 4vw, 1rem);
+}
+
+.heart{
+    position:fixed;
+    color:pink;
+    font-size:20px;
+    pointer-events:none;
+    animation:float 5s linear infinite;
+    z-index:0;
+}
+
+@keyframes float{
+    from{
+        transform:translateY(100vh);
+        opacity:1;
+    }
+    to{
+        transform:translateY(-100px);
+        opacity:0;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div id="question">
+    <h1>Will you go on a date with me? ❤️</h1>
+
+    <div class="buttons">
+        <button id="yesBtn">Yes 💖</button>
+        <button id="noBtn">No 😅</button>
+    </div>
+</div>
+
+<div id="dateSection">
+    <h1>Yaaay! 🎉💕</h1>
+    <p>When are you free?</p>
+
+    <input type="date" id="date">
+
+    <br><br>
+
+    <button class="confirm-btn" onclick="confirmDate()">Set the Date 💖</button>
+
+    <p id="result"></p>
+</div>
+
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const buttonsDiv = document.querySelector(".buttons");
+
+function moveNoBtn() {
+    const containerWidth = buttonsDiv.offsetWidth;
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+    const maxX = containerWidth - btnWidth - 10;
+    const maxY = buttonsDiv.offsetHeight - btnHeight - 10;
+
+    const x = Math.max(0, Math.random() * maxX);
+    const y = Math.max(0, Math.random() * maxY);
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+    noBtn.style.right = "auto";
+}
+
+// Desktop: move on hover
+noBtn.addEventListener("mouseover", moveNoBtn);
+
+// Mobile: move on touchstart (before tap registers)
+noBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    moveNoBtn();
+}, { passive: false });
+
+document.getElementById("yesBtn").addEventListener("click", () => {
+    document.getElementById("question").style.display = "none";
+    document.getElementById("dateSection").style.display = "block";
+});
+
+function confirmDate(){
+    let date = document.getElementById("date").value;
+
+    if(date === ""){
+        alert("Choose a date first ❤️");
+        return;
+    }
+
+    // Format the date nicely
+    const formatted = new Date(date + "T00:00:00").toLocaleDateString("en-US", {
+        weekday:"long", year:"numeric", month:"long", day:"numeric"
+    });
+
+    document.getElementById("result").innerHTML =
+    "Can't wait! 💕<br>Our date is set for<br><b>" + formatted + "</b>";
+}
+
+function createHeart(){
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 5000);
+}
+
+setInterval(createHeart, 300);
+</script>
+
+</body>
+</html>
